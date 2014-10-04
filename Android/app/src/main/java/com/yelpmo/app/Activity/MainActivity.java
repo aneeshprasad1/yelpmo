@@ -1,5 +1,7 @@
 package com.yelpmo.app.Activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -7,6 +9,8 @@ import android.view.MenuItem;
 import com.parse.Parse;
 import com.yelpmo.app.Constants.ParseInfo;
 import com.yelpmo.app.Fragment.MealsFragment;
+import com.yelpmo.app.Fragment.SignUpFragment;
+import com.yelpmo.app.Preferences.UserDetails;
 import com.yelpmo.app.R;
 
 
@@ -16,10 +20,16 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initParse();
-        initMealsFragment();
+        authorizeUser();
     }
 
+    private void authorizeUser() {
+        if(UserDetails.isSignedIn()) {
+            initMealsFragment();
+        } else {
+            initSignUpFragment();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,7 +52,13 @@ public class MainActivity extends BaseActivity {
 
     private void initMealsFragment() {
         MealsFragment mealsFrag = new MealsFragment();
-        getFragmentManager().beginTransaction().add(mealsFrag, "mealsFrag")
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, mealsFrag)
+                .commit();
+    }
+
+    private void initSignUpFragment() {
+        SignUpFragment signUpFrag = new SignUpFragment();
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, signUpFrag)
                 .commit();
     }
 

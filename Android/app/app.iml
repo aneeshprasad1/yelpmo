@@ -110,8 +110,8 @@
     <orderEntry type="library" exported="" name="deprecated-list" level="project" />
     <orderEntry type="library" exported="" name="ParseQueryAdapter" level="project" />
     <orderEntry type="library" exported="" name="1_ParseQueryAdapter" level="project" />
-    <orderEntry type="library" exported="" name="index-all" level="project" />
     <orderEntry type="library" exported="" name="index" level="project" />
+    <orderEntry type="library" exported="" name="index-all" level="project" />
     <orderEntry type="library" exported="" name="ParseQueryAdapter.QueryFactory" level="project" />
     <orderEntry type="library" exported="" name="1_ParseQueryAdapter.QueryFactory" level="project" />
     <orderEntry type="library" exported="" name="ParseQueryAdapter.OnQueryLoadListener" level="project" />
@@ -127,6 +127,7 @@
     <orderEntry type="library" exported="" name="FindCallback" level="project" />
     <orderEntry type="library" exported="" name="1_FindCallback" level="project" />
     <orderEntry type="library" exported="" name="package-use" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.3" level="project" />
     <orderEntry type="library" exported="" name="ParseUser" level="project" />
     <orderEntry type="library" exported="" name="1_ParseUser" level="project" />
     <orderEntry type="library" exported="" name="SendCallback" level="project" />
