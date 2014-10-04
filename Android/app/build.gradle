@@ -20,6 +20,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile fileTree(":Parse-1.7.0");
+    compile fileTree(dir: 'libs')
+    //compile fileTree(":Parse-1.7.0");
 }

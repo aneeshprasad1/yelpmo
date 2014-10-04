@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.Parse;
+import com.yelpmo.app.Constants.ParseInfo;
 import com.yelpmo.app.Fragment.MealsFragment;
 import com.yelpmo.app.R;
 
@@ -14,6 +16,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initParse();
         initMealsFragment();
     }
 
@@ -41,5 +44,9 @@ public class MainActivity extends BaseActivity {
         MealsFragment mealsFrag = new MealsFragment();
         getFragmentManager().beginTransaction().add(mealsFrag, "mealsFrag")
                 .commit();
+    }
+
+    private void initParse() {
+        Parse.initialize(this, ParseInfo.APPLICATION_ID, ParseInfo.CLIENT_ID);
     }
 }
