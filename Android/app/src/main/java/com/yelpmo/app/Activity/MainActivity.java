@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.parse.Parse;
 import com.yelpmo.app.Constants.ParseInfo;
+import com.yelpmo.app.Fragment.LogInFragment;
 import com.yelpmo.app.Fragment.MealsFragment;
 import com.yelpmo.app.Fragment.SignUpFragment;
 import com.yelpmo.app.Preferences.UserDetails;
@@ -28,6 +29,8 @@ public class MainActivity extends BaseActivity {
     private void authorizeUser() {
         if(UserDetails.isSignedIn()) {
             initMealsFragment();
+        } else if (UserDetails.hasLogIn()) {
+            initLogInFragment();
         } else {
             initSignUpFragment();
         }
@@ -51,7 +54,7 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initMealsFragment() {
+    public void initMealsFragment() {
         MealsFragment mealsFrag = new MealsFragment();
         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, mealsFrag)
                 .commit();
@@ -60,6 +63,12 @@ public class MainActivity extends BaseActivity {
     private void initSignUpFragment() {
         SignUpFragment signUpFrag = new SignUpFragment();
         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, signUpFrag)
+                .commit();
+    }
+
+    private void initLogInFragment() {
+        LogInFragment logInFrag = new LogInFragment();
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, logInFrag)
                 .commit();
     }
 
