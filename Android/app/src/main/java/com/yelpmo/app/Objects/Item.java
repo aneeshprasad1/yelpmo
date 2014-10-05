@@ -16,18 +16,16 @@ public class Item {
     private String objectId;
     private String name;
 
-    public void addOwner(OtherUser user){
-        this.owner = user;
-        parseObject.put("owner", user.getObjectId());
-        parseObject.saveInBackground();
-    }
-
     //Constructors
 
     //To be called when creating an item:
     public Item(String name, double price){
-        setName(name);
-        setPrice(price);
+        this.name = name;
+        this.price = price;
+        this.parseObject = new ParseObject("Item");
+        parseObject.put("name", name);
+        parseObject.put("price", price);
+        parseObject.saveInBackground();
     }
 
     public Item(ParseObject parseObject, Meal meal){
@@ -46,6 +44,7 @@ public class Item {
 
     public void setName(String name) {
         this.name = name;
+        parseObject.put("name", name);
     }
 
     public String getObjectId() {
@@ -62,6 +61,8 @@ public class Item {
 
     public void setOwner(OtherUser owner) {
         this.owner = owner;
+        parseObject.put("owner", owner.getObjectId());
+        parseObject.saveInBackground();
     }
 
     public Meal getMeal() {
@@ -81,6 +82,7 @@ public class Item {
     }
 
     public void setPrice(double price) {
+        parseObject.put("price", price);
         this.price = price;
     }
 

@@ -34,7 +34,6 @@ public class Meal {
     public Meal(String name, User user){
         this.owner = user;
         this.name = name;
-
         this.parseObject = new ParseObject("Meal");
         parseObject.put("name", name);
         parseObject.put("owner", user.getParseUser());
