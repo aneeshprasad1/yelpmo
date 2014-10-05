@@ -11,6 +11,9 @@ import android.widget.EditText;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.yelpmo.app.Activity.MainActivity;
+import com.yelpmo.app.BusProvider;
+import com.yelpmo.app.Event.UserSignedUpEvent;
+import com.yelpmo.app.Preferences.UserDetails;
 import com.yelpmo.app.R;
 
 /**
@@ -48,10 +51,9 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void done(com.parse.ParseException e) {
                 if (e == null) {
-                    Log.d("yeah", "working");
-                    ((MainActivity) getActivity()).initMealsFragment();
-                } else {
-                    Log.d("boo", e.toString());
+                    UserDetails.setHasLogIn(true);
+                    UserDetails.setSignedIn(true);
+                    BusProvider.getBus().post(new UserSignedUpEvent());
                 }
             }
         });

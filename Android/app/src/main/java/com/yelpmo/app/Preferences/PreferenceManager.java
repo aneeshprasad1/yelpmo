@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class PreferenceManager {
 
-    private static final String GENERAL_PREFERENCES = "CONVERSATE_GENERAL_PREFS";
+    private static final String GENERAL_PREFERENCES = "YELPMO_GENERAL_PREFS";
 
     private static SharedPreferences getPreferences() {
         return App.getInstance().getSharedPreferences(GENERAL_PREFERENCES, Context.MODE_PRIVATE);

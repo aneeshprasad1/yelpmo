@@ -11,6 +11,8 @@ import android.widget.EditText;
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
 import com.yelpmo.app.Activity.MainActivity;
+import com.yelpmo.app.BusProvider;
+import com.yelpmo.app.Event.UserLoggedInEvent;
 import com.yelpmo.app.R;
 
 /**
@@ -42,8 +44,7 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener{
         ParseUser.logInInBackground(userName, password, new LogInCallback() {
             public void done(ParseUser user, com.parse.ParseException e) {
                 if (user != null) {
-                    Log.d("yeah", "working"); // Hooray! The user is logged in.
-                    ((MainActivity) getActivity()).initMealsFragment();
+                    BusProvider.getBus().post(new UserLoggedInEvent());
                 } else {
                     Log.d("boo", e.toString()); // Signup failed. Look at the ParseException to see what happened.
                 }

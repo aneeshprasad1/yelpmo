@@ -8,7 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.Parse;
+import com.squareup.otto.Subscribe;
 import com.yelpmo.app.Constants.ParseInfo;
+import com.yelpmo.app.Event.UserLoggedInEvent;
+import com.yelpmo.app.Event.UserSignedUpEvent;
+import com.yelpmo.app.Event.VenmoAuthorizedEvent;
 import com.yelpmo.app.Fragment.LogInFragment;
 import com.yelpmo.app.Fragment.MealsFragment;
 import com.yelpmo.app.Fragment.SignUpFragment;
@@ -72,6 +76,11 @@ public class MainActivity extends BaseActivity {
                 .commit();
     }
 
+    private void requestAuthorizeVenmo() {
+        Intent iAuthorizeVenmo = new Intent(this, VenmoAuthActivity.class);
+        startActivity(iAuthorizeVenmo);
+    }
+
     private static final int CAMERA_REQUEST_CODE = 4200;
 
     private void launchCameraForReceipt() {
@@ -96,5 +105,23 @@ public class MainActivity extends BaseActivity {
                 handleCameraResponse(data);
                 break;
         }
+    }
+
+    @Subscribe
+    public void onUserSignedUp(UserSignedUpEvent event) {
+        initMealsFragment();
+        if(!UserDetails.hasVenmo()) {
+            requestAuthorizeVenmo();
+        }
+    }
+
+    @Subscribe
+    public void onUserLoggedIn(UserLoggedInEvent event) {
+        initMealsFragment();
+    }
+
+    @Subscribe
+    public void onVenmoAuthorized(VenmoAuthorizedEvent event) {
+        //Show thx message
     }
 }

@@ -1,24 +1,42 @@
 package com.yelpmo.app.Activity;
 
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import com.yelpmo.app.R;
+import com.yelpmo.app.Venmo.Venmo;
 
 /**
  * Created by Corey on 10/4/14.
  */
-public class VenmoAuthActivity extends BaseActivity {
+public class VenmoAuthActivity extends BaseActivity implements View.OnClickListener {
 
-    private String ACCESS_TOKEN_PARAMETER = "access_token";
+    private Button btnLinkVenmo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handleAuthToken();
+        setContentView(R.layout.activity_venmo_auth);
+        initializeView();
     }
 
-    private void handleAuthToken() {
-        Uri data = getIntent().getData();
-        String token = data.getQueryParameter(ACCESS_TOKEN_PARAMETER);
+    private void initializeView() {
+        btnLinkVenmo = (Button) findViewById(R.id.btn_link_venmo);
+        btnLinkVenmo.setOnClickListener(this);
+    }
 
+    private void linkVenmo() {
+        Venmo.makeAuthorizationRequest(this);
+        finish();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.btn_link_venmo:
+                linkVenmo();
+                break;
+        }
     }
 }

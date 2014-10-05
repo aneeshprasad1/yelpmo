@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.VenmoAuthActivity">
+        <activity android:name=".Activity.VenmoTokenReceiverActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -30,6 +30,7 @@
                     android:host="supertag.us"/>
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.VenmoAuthActivity"/>
     </application>
 
 </manifest>
