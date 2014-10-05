@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -20,6 +21,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     EditText etUsername, etPassword, etEmailAddress;
     Button btnSignUp;
+    TextView linkToSignIn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         etEmailAddress = (EditText) view.findViewById(R.id.et_signup_email);
         btnSignUp = (Button) view.findViewById(R.id.btn_signup);
         btnSignUp.setOnClickListener(this);
+        linkToSignIn = (TextView) view.findViewById(R.id.login_link);
+        linkToSignIn.setOnClickListener(this);
         return view;
     }
 
@@ -58,11 +62,18 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     }
 
+    private void switchToLogin() {
+        ((MainActivity) getActivity()).initLogInFragment();
+    }
+
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.btn_signup:
                 signUp();
+                break;
+            case R.id.login_link:
+                switchToLogin();
                 break;
         }
     }

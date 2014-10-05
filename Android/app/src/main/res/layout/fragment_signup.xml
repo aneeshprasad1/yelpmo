@@ -10,7 +10,20 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true">
 
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="YelpMo"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:typeface="serif"
+            android:textSize="40sp"
+        />
+
         <EditText
+            android:layout_below="@id/logo"
             android:id="@+id/et_signup_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,6 +61,19 @@
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/login_link"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Already a User? Login"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/btn_signup"
+            android:layout_marginTop="20dp"
+            />
+
+
 
     </RelativeLayout>
 

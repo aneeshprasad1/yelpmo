@@ -4,16 +4,24 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.yelpmo.app.Constants.ParseInfo;
 import com.yelpmo.app.Fragment.LogInFragment;
 import com.yelpmo.app.Fragment.MealsFragment;
 import com.yelpmo.app.Fragment.SignUpFragment;
 import com.yelpmo.app.Preferences.UserDetails;
 import com.yelpmo.app.R;
+
+import java.util.List;
 
 
 public class MainActivity extends BaseActivity {
@@ -29,8 +37,6 @@ public class MainActivity extends BaseActivity {
     private void authorizeUser() {
         if(UserDetails.isSignedIn()) {
             initMealsFragment();
-        } else if (UserDetails.hasLogIn()) {
-            initLogInFragment();
         } else {
             initSignUpFragment();
         }
@@ -55,18 +61,30 @@ public class MainActivity extends BaseActivity {
     }
 
     public void initMealsFragment() {
-        MealsFragment mealsFrag = new MealsFragment();
-        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, mealsFrag)
-                .commit();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Meal");
+        query.whereEqualTo("owner", currentUser);
+        Log.d("user", currentUser.toString());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                Log.d("meals", parseObjects.toString());
+                Log.d("meals", Integer.toString(parseObjects.size()));
+                MealsFragment mealsFrag = new MealsFragment();
+                getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, mealsFrag)
+                        .commit();
+            }
+        });
+
     }
 
-    private void initSignUpFragment() {
+    public void initSignUpFragment() {
         SignUpFragment signUpFrag = new SignUpFragment();
         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, signUpFrag)
                 .commit();
     }
 
-    private void initLogInFragment() {
+    public void initLogInFragment() {
         LogInFragment logInFrag = new LogInFragment();
         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, logInFrag)
                 .commit();

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
@@ -20,6 +21,7 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener{
 
     EditText etUsername, etPassword;
     Button btnLogIn;
+    TextView linkToSignUp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener{
         etPassword = (EditText) view.findViewById(R.id.et_login_password);
         btnLogIn = (Button) view.findViewById(R.id.btn_login);
         btnLogIn.setOnClickListener(this);
+        linkToSignUp = (TextView) view.findViewById(R.id.signup_link);
+        linkToSignUp.setOnClickListener(this);
         return view;
     }
 
@@ -42,13 +46,17 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener{
         ParseUser.logInInBackground(userName, password, new LogInCallback() {
             public void done(ParseUser user, com.parse.ParseException e) {
                 if (user != null) {
-                    Log.d("yeah", "working"); // Hooray! The user is logged in.
+                    Log.d("login", "login successful!");
                     ((MainActivity) getActivity()).initMealsFragment();
                 } else {
-                    Log.d("boo", e.toString()); // Signup failed. Look at the ParseException to see what happened.
+                    Log.d("login", e.toString()); // Signup failed. Look at the ParseException to see what happened.
                 }
             }
         });
+    }
+
+    private void switchToSignUp() {
+        ((MainActivity) getActivity()).initSignUpFragment();
     }
 
     @Override
@@ -56,6 +64,9 @@ public class LogInFragment extends BaseFragment implements View.OnClickListener{
         switch(view.getId()) {
             case R.id.btn_login:
                 logIn();
+                break;
+            case R.id.signup_link:
+                switchToSignUp();
                 break;
         }
     }
