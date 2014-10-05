@@ -1,12 +1,18 @@
 package com.yelpmo.app.Activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.Parse;
 import com.yelpmo.app.Constants.ParseInfo;
+import com.yelpmo.app.Fragment.LogInFragment;
 import com.yelpmo.app.Fragment.MealsFragment;
+import com.yelpmo.app.Fragment.SignUpFragment;
+import com.yelpmo.app.Preferences.UserDetails;
 import com.yelpmo.app.R;
 
 
@@ -17,36 +23,78 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initParse();
-        initMealsFragment();
+        authorizeUser();
     }
 
+    private void authorizeUser() {
+        if(UserDetails.isSignedIn()) {
+            initMealsFragment();
+        } else if (UserDetails.hasLogIn()) {
+            initLogInFragment();
+        } else {
+            initSignUpFragment();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                break;
+            case R.id.action_new_meal:
+                launchCameraForReceipt();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void initMealsFragment() {
+    public void initMealsFragment() {
         MealsFragment mealsFrag = new MealsFragment();
-        getFragmentManager().beginTransaction().add(mealsFrag, "mealsFrag")
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, mealsFrag)
                 .commit();
+    }
+
+    private void initSignUpFragment() {
+        SignUpFragment signUpFrag = new SignUpFragment();
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, signUpFrag)
+                .commit();
+    }
+
+    private void initLogInFragment() {
+        LogInFragment logInFrag = new LogInFragment();
+        getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, logInFrag)
+                .commit();
+    }
+
+    private static final int CAMERA_REQUEST_CODE = 4200;
+
+    private void launchCameraForReceipt() {
+        Intent iLaunchCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(iLaunchCamera, CAMERA_REQUEST_CODE);
+    }
+
+    private void handleCameraResponse(Intent data) {
+        Bitmap receiptPhoto = (Bitmap) data.getExtras().get("data");
+        //OCR this!
     }
 
     private void initParse() {
         Parse.initialize(this, ParseInfo.APPLICATION_ID, ParseInfo.CLIENT_ID);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case CAMERA_REQUEST_CODE:
+                handleCameraResponse(data);
+                break;
+        }
     }
 }

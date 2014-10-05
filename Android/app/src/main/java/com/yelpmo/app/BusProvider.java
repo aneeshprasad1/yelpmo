@@ -1,13 +1,14 @@
 package com.yelpmo.app;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 /**
  * Created by Corey on 10/3/14.
  */
 public class BusProvider {
 
-    public static Bus BUS;
+    public static Bus BUS = new Bus(ThreadEnforcer.ANY);
 
     public static Bus getBus() {
         return BUS;
