@@ -1,12 +1,16 @@
 package com.yelpmo.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+import com.yelpmo.app.Activity.MainActivity;
 import com.yelpmo.app.R;
 
 /**
@@ -36,8 +40,23 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         String userName = etUsername.getText().toString();
         String password = etPassword.getText().toString();
         String emailAddress = etEmailAddress.getText().toString();
-    }
+        ParseUser user = new ParseUser();
+        user.setUsername(userName);
+        user.setPassword(password);
+        user.setEmail(emailAddress);
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(com.parse.ParseException e) {
+                if (e == null) {
+                    Log.d("yeah", "working");
+                    ((MainActivity) getActivity()).initMealsFragment();
+                } else {
+                    Log.d("boo", e.toString());
+                }
+            }
+        });
 
+    }
 
     @Override
     public void onClick(View view) {
