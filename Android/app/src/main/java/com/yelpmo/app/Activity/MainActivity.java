@@ -3,16 +3,13 @@ package com.yelpmo.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.asprise.ocr.Ocr;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.parse.Parse;
 import com.yelpmo.app.Application.App;
@@ -24,12 +21,12 @@ import com.yelpmo.app.OCR.OcrManager;
 import com.yelpmo.app.Preferences.UserDetails;
 import com.yelpmo.app.R;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
 public class MainActivity extends BaseActivity {
+
+    private static Uri receiptPhotoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +74,6 @@ public class MainActivity extends BaseActivity {
         SignUpFragment signUpFrag = new SignUpFragment();
         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, signUpFrag)
                 .commit();
-
     }
 
     private void initLogInFragment() {
@@ -89,39 +85,37 @@ public class MainActivity extends BaseActivity {
 
     private static final int CAMERA_REQUEST_CODE = 4200;
 
-    private Uri mPhotoUri;
-
     private void launchCameraForReceipt() {
         Intent iLaunchCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        path += "/YelpMo/receipt.jpg";
-        File file = new File(path);
-        mPhotoUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        receiptPhotoUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 new ContentValues());
-        iLaunchCamera.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
+        iLaunchCamera.putExtra(MediaStore.EXTRA_OUTPUT, receiptPhotoUri);
         startActivityForResult(iLaunchCamera, CAMERA_REQUEST_CODE);
     }
 
     private void handleCameraResponse() throws IOException {
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mPhotoUri);
-        final Bitmap receiptPhoto = bitmap;
-        Thread thread = new Thread(new Runnable() {
+        final Bitmap receiptPhoto = MediaStore.Images.Media.getBitmap(this.getContentResolver(), receiptPhotoUri);
+        if(receiptPhoto == null) {
+            return;
+        }
+            Thread thread = new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                TessBaseAPI baseAPI = new TessBaseAPI();
-                try {
-                    baseAPI.init(OcrManager.getTesseractDataPath(App.getInstance()), "eng");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                @Override
+                public void run() {
+                    TessBaseAPI baseAPI = new TessBaseAPI();
+                    try {
+                        baseAPI.init(OcrManager.getTesseractDataPath(App.getInstance()), "eng");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    baseAPI.setImage(receiptPhoto);
+                    String text = baseAPI.getUTF8Text();
+                    Log.d("RECEIPT", text);
+                    baseAPI.end();
                 }
-                baseAPI.setImage(receiptPhoto);
-                String text = baseAPI.getUTF8Text();
-                Log.d("RECEIPT", text);
-                baseAPI.end();
-            }
-        });
-        thread.start();
+            });
+            thread.start();
+
     }
 
     private void initParse() {

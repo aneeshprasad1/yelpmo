@@ -32,10 +32,7 @@ public class OcrManager {
             File dir = new File(path);
             if (!dir.exists()) {
                 if (!dir.mkdirs()) {
-                    Log.v("RECEIPT", "ERROR: Creation of directory " + path + " on sdcard failed");
                     return null;
-                } else {
-                    Log.v("RECEIPT", "Created directory " + path + " on sdcard");
                 }
             }
 
