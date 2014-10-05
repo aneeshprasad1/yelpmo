@@ -1,7 +1,9 @@
 package com.yelpmo.app.Dialog;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -24,8 +26,19 @@ public class BaseDialogFragment extends DialogFragment {
         return newFrag;
     }
 
+    public static BaseDialogFragment showDialog(FragmentManager fragmentManager,
+           String title, String message, String buttonText, DialogInterface.OnClickListener buttonClickListener) {
+        BaseDialogFragment fragment = newInstanceOneButton(title, message, buttonText, buttonClickListener);
+        fragment.show(fragmentManager, title);
+        return fragment;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle(getArguments().getString("title"))
+                .setMessage(getArguments().getString("message"))
+                .setNeutralButton("buttonText", onButtonClickListener);
+        return builder.create();
     }
 }

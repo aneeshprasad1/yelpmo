@@ -23,7 +23,7 @@ public class VenmoAuthActivity extends BaseActivity implements View.OnClickListe
 
     private void initializeView() {
         btnLinkVenmo = (Button) findViewById(R.id.btn_link_venmo);
-        btnLinkVenmo.setOnClickListener(this);
+       // btnLinkVenmo.setOnClickListener(this);
     }
 
     private void linkVenmo() {
@@ -36,6 +36,7 @@ public class VenmoAuthActivity extends BaseActivity implements View.OnClickListe
         switch(view.getId()) {
             case R.id.btn_link_venmo:
                 linkVenmo();
+
                 break;
         }
     }

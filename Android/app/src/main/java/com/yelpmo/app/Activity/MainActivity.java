@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.Parse;
 import com.squareup.otto.Subscribe;
 import com.yelpmo.app.Constants.ParseInfo;
+import com.yelpmo.app.Dialog.BaseDialogFragment;
 import com.yelpmo.app.Event.UserLoggedInEvent;
 import com.yelpmo.app.Event.UserSignedUpEvent;
 import com.yelpmo.app.Event.VenmoAuthorizedEvent;
@@ -122,6 +124,8 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe
     public void onVenmoAuthorized(VenmoAuthorizedEvent event) {
-        //Show thx message
+        Log.d("VENMO", "AUTHORIZED");
+        BaseDialogFragment.showDialog(getFragmentManager(), "Thank you",
+                "Thank you for linking your Venmo account!", "Continue", null);
     }
 }

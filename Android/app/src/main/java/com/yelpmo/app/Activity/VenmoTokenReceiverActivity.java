@@ -26,6 +26,9 @@ public class VenmoTokenReceiverActivity extends BaseActivity {
         String token = data.getQueryParameter(ACCESS_TOKEN_PARAMETER);
         UserDetails.setHasVenmo(true);
         UserDetails.setVenmoToken(token);
+        Intent iStartMainActivity = new Intent(this, MainActivity.class);
+        iStartMainActivity.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(iStartMainActivity);
         finish();
     }
 
