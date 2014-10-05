@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initMealsFragment() {
+    public void initMealsFragment() {
         MealsFragment mealsFrag = new MealsFragment();
         getFragmentManager().beginTransaction().replace(R.id.fl_fragment_container, mealsFrag)
                 .commit();
